@@ -1,8 +1,7 @@
 val input = 325489
 
-def distance(i: Int): (Int, Int) = {
+def distance(i: Int): Int = {
   def findCapacity(capacity: Int, depth: Int): (Int, Int) = {
-    println(s"cap: ${capacity} dep: ${depth}")
     val newCapacity = capacity + 8 * (depth+1)
 
     if (newCapacity >= i) {
@@ -27,12 +26,13 @@ def distance(i: Int): (Int, Int) = {
   }
 
   val (diff, depth) = findCapacity(1, 0)
-  println(s"diff: ${diff} depth: ${depth}")
 
-  walk((depth, (depth * -1) + 1), depth, diff)
+  val (x, y) = walk((depth, (depth * -1) + 1), depth, diff - 1)
+
+  Math.abs(x) + Math.abs(y)
 }
 
-distance(12)
-distance(23)
-distance(1024)
+distance(12) // (2,1) 3 steps
+distance(23) // (0, -2) 2 steps
+distance(1024) // ? 31 steps
 distance(325489)
