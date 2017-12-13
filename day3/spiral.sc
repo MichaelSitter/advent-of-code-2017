@@ -37,11 +37,9 @@ distance(23) // (0, -2) 2 steps
 distance(1024) // ? 31 steps
 distance(325489)
 
-def moves(i: Int): Map[(Int, Int), Int] = {
+def moves(): Stream[((Int, Int), Int)] = {
 
-  def step(coord: (Int, Int), depth: Int, curr: Int, map: Map[(Int, Int), Int]): Map[(Int, Int), Int] = {
-//    if (curr > i) map
-//    else {
+  def step(coord: (Int, Int), depth: Int, curr: Int, map: Map[(Int, Int), Int]): Stream[((Int, Int), Int)] = {
       val (nextCoord, nextDepth) = coord match {
         // New depth
         case (x,y) if (x == depth) && y == (depth * -1) => ((x+1, y), depth+1)
@@ -55,9 +53,10 @@ def moves(i: Int): Map[(Int, Int), Int] = {
         case (x,y) if (x == depth * -1) && y > (depth * -1) => ((x, y-1), depth)
       }
 
-      step(nextCoord, nextDepth, curr+1, map + (nextCoord -> curr))
+      (coord, curr) #:: step(nextCoord, nextDepth, curr+1, map + (nextCoord -> curr))
     }
-//  }
 
-  step((0,0), 0, 2, Map((0,0) -> 1))
+  step((0,0), 0, 1, Map((0,0) -> 1))
 }
+
+val superSpiral = moves().map(foop)
